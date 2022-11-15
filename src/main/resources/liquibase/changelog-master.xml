@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+
+    <changeSet id="1" author="everton">
+        <createTable tableName="movie">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_movie"/>
+            </column>
+            <column name="year_movie" type="integer" />
+            <column name="title" type="varchar(100)" />
+            <column name="winner" type="boolean" />
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="everton">
+        <createTable tableName="producer">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_producer"/>
+            </column>
+            <column name="name" type="varchar(100)" />
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="everton">
+        <createTable tableName="studio">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_studio"/>
+            </column>
+            <column name="name" type="varchar(100)" />
+        </createTable>
+    </changeSet>
+
+    <changeSet id="4" author="everton">
+        <createTable tableName="movie_producer">
+            <column name="movie_id" type="integer">
+                <constraints nullable="false" />
+            </column>
+            <column name="producer_id" type="integer">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="movie_producer"
+                                 baseColumnNames="movie_id"
+                                 constraintName="fk_movie_producer"
+                                 referencedTableName="movie"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="movie_producer"
+                                 baseColumnNames="producer_id"
+                                 constraintName="fk_producer"
+                                 referencedTableName="producer"
+                                 referencedColumnNames="id"/>
+
+        <addPrimaryKey tableName="movie_producer"
+                       columnNames="movie_id, producer_id"
+                       constraintName="pk_movie_producer"/>
+    </changeSet>
+
+    <changeSet id="5" author="everton">
+        <createTable tableName="movie_studio">
+            <column name="movie_id" type="integer">
+                <constraints nullable="false" />
+            </column>
+            <column name="studio_id" type="integer">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="movie_studio"
+                                 baseColumnNames="movie_id"
+                                 constraintName="fk_movie_studio"
+                                 referencedTableName="movie"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="movie_studio"
+                                 baseColumnNames="studio_id"
+                                 constraintName="fk_studio"
+                                 referencedTableName="studio"
+                                 referencedColumnNames="id"/>
+
+        <addPrimaryKey tableName="movie_studio"
+                       columnNames="movie_id, studio_id"
+                       constraintName="pk_movie_studio"/>
+    </changeSet>
+</databaseChangeLog>
