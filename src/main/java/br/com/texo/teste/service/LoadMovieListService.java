@@ -1,25 +1,24 @@
 package br.com.texo.teste.service;
 
-import br.com.texo.teste.helper.MovieCSV;
 import br.com.texo.teste.entity.Movie;
 import br.com.texo.teste.entity.Producer;
 import br.com.texo.teste.entity.Studio;
+import br.com.texo.teste.helper.MovieCSV;
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.bean.CsvToBeanBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
@@ -54,8 +53,9 @@ public class LoadMovieListService {
     }
 
     private List<MovieCSV> readCSV(String csvFileName) throws URISyntaxException, IOException {
-        Path path = Paths.get(ClassLoader.getSystemResource(csvFileName).toURI());
-        Reader reader = Files.newBufferedReader(path);
+
+        ClassPathResource classPathResource = new ClassPathResource(csvFileName);
+        Reader reader = new InputStreamReader(classPathResource.getInputStream());
 
         CSVParser parser = new CSVParserBuilder().withSeparator(';').build();
         CSVReader csvReader = new CSVReaderBuilder(reader)

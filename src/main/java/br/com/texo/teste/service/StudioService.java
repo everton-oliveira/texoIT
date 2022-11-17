@@ -5,6 +5,8 @@ import br.com.texo.teste.repository.StudioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class StudioService {
 
@@ -13,5 +15,9 @@ public class StudioService {
 
     public void save(Studio studio) {
         studioRepository.save(studio);
+    }
+
+    public List<Studio> list() {
+        return studioRepository.findAll();
     }
 }

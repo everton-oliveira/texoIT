@@ -3,12 +3,13 @@ package br.com.texo.teste.entity;
 import br.com.texo.teste.helper.MovieCSV;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "studio")
-public class Studio {
+public class Studio implements Serializable {
 
     private Long id;
     private String name;

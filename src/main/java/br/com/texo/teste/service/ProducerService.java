@@ -23,6 +23,14 @@ public class ProducerService {
         producerRepository.save(producer);
     }
 
+    public List<Producer> list() {
+        return producerRepository.findAll();
+    }
+
+    public List<Producer> listWinningProducers() {
+        return producerRepository.listWinningProducers();
+    }
+
     public List<ProducerIntervalWin> listProducerMinIntervalWin() {
 
         Map<Producer, List<Movie>> producerWinner = getProducerWinnerMoreThanOnce();

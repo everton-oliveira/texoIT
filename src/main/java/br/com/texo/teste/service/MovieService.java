@@ -20,4 +20,12 @@ public class MovieService {
     public List<Movie> winningMovies() {
         return movieRepository.findMovieByWinner(true);
     }
+
+    public List<Movie> list() {
+        return movieRepository.findAll();
+    }
+
+    public Movie find(Long id) {
+        return movieRepository.findById(id).orElse(null);
+    }
 }
