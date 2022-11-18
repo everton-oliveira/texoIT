@@ -4,26 +4,18 @@ import br.com.texo.teste.entity.Movie;
 import br.com.texo.teste.entity.Producer;
 import br.com.texo.teste.entity.Studio;
 import br.com.texo.teste.helper.MovieCSV;
-import com.opencsv.CSVParser;
-import com.opencsv.CSVParserBuilder;
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
-import com.opencsv.bean.CsvToBeanBuilder;
+import br.com.texo.teste.helper.MovieListCSVReader;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class LoadMovieListService {
@@ -46,28 +38,11 @@ public class LoadMovieListService {
         loadMovieListFromCSVFile("movielist.csv");
     }
 
-    private void loadMovieListFromCSVFile(String csvFileName) throws URISyntaxException, IOException {
+    private void loadMovieListFromCSVFile(String csvFileName) throws IOException {
 
-        List<MovieCSV> csvData = readCSV(csvFileName);
+        MovieListCSVReader movieListCSVReader = new MovieListCSVReader();
+        List<MovieCSV> csvData = movieListCSVReader.read(csvFileName);
         createMovies(csvData);
-    }
-
-    private List<MovieCSV> readCSV(String csvFileName) throws URISyntaxException, IOException {
-
-        ClassPathResource classPathResource = new ClassPathResource(csvFileName);
-        Reader reader = new InputStreamReader(classPathResource.getInputStream());
-
-        CSVParser parser = new CSVParserBuilder().withSeparator(';').build();
-        CSVReader csvReader = new CSVReaderBuilder(reader)
-                .withSkipLines(1)
-                .withCSVParser(parser)
-                .build();
-
-        return new CsvToBeanBuilder<MovieCSV>(csvReader)
-                .withType(MovieCSV.class)
-                .build()
-                .stream()
-                .collect(Collectors.toList());
     }
 
     private void createMovies(List<MovieCSV> cb) {

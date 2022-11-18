@@ -27,6 +27,10 @@ public class ProducerService {
         return producerRepository.findAll();
     }
 
+    public Producer find(Long id) {
+        return producerRepository.findById(id).orElse(null);
+    }
+
     public List<Producer> listWinningProducers() {
         return producerRepository.listWinningProducers();
     }
@@ -92,4 +96,7 @@ public class ProducerService {
         return result;
     }
 
+    public Producer findByName(String name) {
+        return producerRepository.findByName(name);
+    }
 }

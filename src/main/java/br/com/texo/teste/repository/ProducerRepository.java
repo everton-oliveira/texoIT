@@ -13,4 +13,6 @@ public interface ProducerRepository extends JpaRepository<Producer, Long> {
     @Query(nativeQuery = true, value = "select distinct p.* from producer p join movie_producer mp on mp.producer_id = p.id join movie m on mp.movie_id = m.id where m.winner")
     List<Producer> listWinningProducers();
 
+    Producer findByName(String name);
+
 }
