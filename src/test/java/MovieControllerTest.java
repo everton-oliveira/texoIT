@@ -1,7 +1,4 @@
 import br.com.texo.teste.controller.MovieController;
-import br.com.texo.teste.helper.MovieCSV;
-import br.com.texo.teste.helper.MovieListCSVReader;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +8,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -66,30 +62,6 @@ public class MovieControllerTest extends IntegrationTest {
 
 
         logger.info(result.getResponse().getContentAsString());
-    }
-
-    @Test
-    public void findMovieByTitle() throws Exception {
-
-        MovieListCSVReader movieListCSVReader = new MovieListCSVReader();
-        List<MovieCSV> movieList = movieListCSVReader.read("movielist.csv");
-
-        for (MovieCSV movieCSV : movieList) {
-            UriComponentsBuilder uriBuilder =
-                    UriComponentsBuilder.fromUriString("/movies/title")
-                            .queryParam("filter", movieCSV.getTitle())
-                            .encode();
-
-            MvcResult result = mockMvc
-                    .perform(get(uriBuilder
-                            .build()
-                            .toUri()))
-                    .andExpect(status().isOk())
-                    .andReturn();
-
-
-            logger.info(result.getResponse().getContentAsString());
-        }
     }
 
     @Test
