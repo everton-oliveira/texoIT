@@ -64,7 +64,7 @@ Após gerar o .jar da aplicação, abra o terminal no diretório target do proje
 
 ### 3.4 Linux
 
-No linux, com a aplicação em execução, abra um novo terminal e utilize o comando "curl" para invocar os serviços da aplicação que deverá responder na porta 8080:
+No linux, com a aplicação em execução, abra um novo terminal e utilize o comando "curl" para invocar os serviços da aplicação que deverá responder na porta 8080, conforme exemplos abaixo:
 
     curl -i localhost:8080/movies/
     curl -i localhost:8080/movies/title?filter=Armageddon
@@ -95,9 +95,13 @@ Obter o produtor com maior intervalo entre dois prêmios consecutivos, e o que o
 
 ### 4.1 Teste automatizado
 
-Este requisito pode ser observado executando-se teste automatizado ProducerControllerTest.winInterval(), o resultado será exibido no terminal:
+Este requisito pode ser observado executando-se o teste automatizado ProducerControllerTest.winInterval(). O resultado será exibido no terminal:
+
+#### IDE IntelliJ
 
 ![img13.png](img13.png)
+
+#### IDE Eclipse
 
 ![img14.png](img14.png)
 
@@ -128,8 +132,6 @@ O comando acima deverá retornar os seguintes dados:
         ]
     }
 
-### 4.3 Postman no Windows
-
-Utilizando o Postman.
+### 4.3 Postman
 
 ![img12.png](img12.png)
