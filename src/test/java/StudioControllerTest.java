@@ -1,5 +1,4 @@
-import br.com.texo.teste.controller.ProducerController;
-import br.com.texo.teste.entity.Producer;
+import br.com.texo.teste.controller.StudioController;
 import br.com.texo.teste.entity.Studio;
 import br.com.texo.teste.helper.MovieCSV;
 import br.com.texo.teste.helper.MovieListCSVReader;
@@ -20,25 +19,25 @@ import java.util.stream.Collectors;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class ProducerControllerTest extends IntegrationTest {
+public class StudioControllerTest extends IntegrationTest {
 
     @Autowired
-    private ProducerController producerController;
+    private StudioController studioController;
 
     private MockMvc mockMvc;
 
     @BeforeEach
     public void init() {
-        mockMvc = MockMvcBuilders.standaloneSetup(producerController)
+        mockMvc = MockMvcBuilders.standaloneSetup(studioController)
                 .setConversionService(createFormattingConversionService())
                 .build();
     }
 
     @Test
-    public void winInterval() throws Exception {
+    public void listStudios() throws Exception {
 
         UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder.fromUriString("/producers/winners/interval");
+                UriComponentsBuilder.fromUriString("/studios/");
 
         MvcResult result = mockMvc
                 .perform(get(uriBuilder
@@ -52,27 +51,10 @@ public class ProducerControllerTest extends IntegrationTest {
     }
 
     @Test
-    public void listProducers() throws Exception {
+    public void winningStudios() throws Exception {
 
         UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder.fromUriString("/producers/");
-
-        MvcResult result = mockMvc
-                .perform(get(uriBuilder
-                        .build()
-                        .toUri()))
-                .andExpect(status().isOk())
-                .andReturn();
-
-
-        logger.info(result.getResponse().getContentAsString());
-    }
-
-    @Test
-    public void winningProducers() throws Exception {
-
-        UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder.fromUriString("/producers/winners");
+                UriComponentsBuilder.fromUriString("/studios/winners");
 
         MvcResult result = mockMvc
                 .perform(get(uriBuilder
@@ -85,13 +67,13 @@ public class ProducerControllerTest extends IntegrationTest {
     }
 
     @Test
-    public void findProducer() throws Exception {
+    public void findStudio() throws Exception {
 
         Map<String, Object> param = new HashMap<>();
         param.put("id", 1);
 
         UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder.fromUriString("/producers/{id}");
+                UriComponentsBuilder.fromUriString("/studios/{id}");
 
         MvcResult result = mockMvc
                 .perform(get(uriBuilder
@@ -105,13 +87,13 @@ public class ProducerControllerTest extends IntegrationTest {
     }
 
     @Test
-    public void producerNotFound() throws Exception {
+    public void studioNotFound() throws Exception {
 
         Map<String, Object> param = new HashMap<>();
         param.put("id", 9999);
 
         UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder.fromUriString("/producers/{id}");
+                UriComponentsBuilder.fromUriString("/studios/{id}");
 
         mockMvc.perform(get(uriBuilder
                         .buildAndExpand(param)
@@ -121,18 +103,17 @@ public class ProducerControllerTest extends IntegrationTest {
     }
 
     @Test
-    public void checkProducersInDatabase() throws Exception {
+    public void checkStudiosInDatabase() throws Exception {
 
         MovieListCSVReader movieListCSVReader = new MovieListCSVReader();
         List<MovieCSV> movieList = movieListCSVReader.read("movielist.csv");
 
-        List<String> names = movieList.stream().map(Producer::producersFromMovieCSV).collect(Collectors.toList()).stream()
-                .flatMap(Collection::stream).map(Producer::getName).distinct().collect(Collectors.toList());
+        List<String> names = movieList.stream().map(Studio::studiosFromMovieCSV).collect(Collectors.toList()).stream()
+                .flatMap(Collection::stream).map(Studio::getName).distinct().collect(Collectors.toList());
 
         for (String name : names) {
-
             UriComponentsBuilder uriBuilder =
-                    UriComponentsBuilder.fromUriString("/producers/name")
+                    UriComponentsBuilder.fromUriString("/studios/name")
                             .queryParam("filter", name)
                             .encode();
 

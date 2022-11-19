@@ -20,4 +20,16 @@ public class StudioService {
     public List<Studio> list() {
         return studioRepository.findAll();
     }
+
+    public Studio find(Long id) {
+        return studioRepository.findById(id).orElse(null);
+    }
+
+    public Studio findByName(String name) {
+        return studioRepository.findByName(name);
+    }
+
+    public List<Studio> listWinningStudios() {
+        return studioRepository.listWinningStudios();
+    }
 }
