@@ -1,9 +1,7 @@
 # Teste TEXO
-
 Importação de arquivo CSV para um banco de dados H2 e implementação de API REST para leitura dos dados.
 
 ## Executar testes de integração automatizados
-
 ### IDE IntelliJ
 
 Após abrir projeto, clique com o botão direito do mouse no direito no diretório src/test/java para abrir o menu de contexto, localize e clique na opção Run 'All Tests'. A IDE irá executar todos os testes automatizados da aplicação.
