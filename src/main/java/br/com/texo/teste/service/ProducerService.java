@@ -40,7 +40,12 @@ public class ProducerService {
         Map<Producer, List<Movie>> producerWinner = getProducerWinnerMoreThanOnce();
 
         OptionalInt min = producerWinner.values().stream()
-                .mapToInt(movieList -> movieList.get(1).getYear() - movieList.get(0).getYear()).min();
+                .mapToInt(movieList -> {
+                    List<Movie> list = movieList.stream().sorted(Comparator.comparing(Movie::getYear))
+                            .collect(Collectors.toList());
+
+                    return list.get(1).getYear() - list.get(0).getYear();
+                }).min();
 
         if (min.isPresent())
             return getWinnerInInterval(producerWinner, min.getAsInt());
@@ -53,7 +58,12 @@ public class ProducerService {
         Map<Producer, List<Movie>> producerWinner = getProducerWinnerMoreThanOnce();
 
         OptionalInt max = producerWinner.values().stream()
-                .mapToInt(movieList -> movieList.get(1).getYear() - movieList.get(0).getYear()).max();
+                .mapToInt(movieList -> {
+                    List<Movie> list = movieList.stream().sorted(Comparator.comparing(Movie::getYear).reversed())
+                            .collect(Collectors.toList());
+
+                    return list.get(0).getYear() - list.get(1).getYear();
+                }).max();
 
         if (max.isPresent())
             return getWinnerInInterval(producerWinner, max.getAsInt());
@@ -77,21 +87,20 @@ public class ProducerService {
 
         List<ProducerIntervalWin> result = new ArrayList<>();
 
-        producerWinner.entrySet().stream()
-                .filter(entry -> (entry.getValue().get(1).getYear() - entry.getValue().get(0).getYear()) == interval)
-                .forEach(producerListEntry -> {
+        producerWinner.entrySet().forEach(entry ->
 
-                    List<Movie> firstTwoMovies = producerListEntry.getValue().stream()
-                            .sorted(Comparator.comparing(Movie::getYear)).limit(2).collect(Collectors.toList());
+            entry.getValue().stream().reduce((movie1, movie2) -> {
 
-                    Movie movie1 = firstTwoMovies.get(0);
-                    Movie movie2 = firstTwoMovies.get(1);
-
+                if (movie2.getYear() - movie1.getYear() == interval) {
                     ProducerIntervalWin producerIntervalWin = new ProducerIntervalWin(
-                            producerListEntry.getKey().getName(), interval, movie1.getYear(), movie2.getYear());
+                            entry.getKey().getName(), interval, movie1.getYear(), movie2.getYear());
 
                     result.add(producerIntervalWin);
-                });
+                }
+
+                return movie2;
+            })
+        );
 
         return result;
     }
